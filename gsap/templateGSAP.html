@@ -2,95 +2,98 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
 </head>
+
 <body>
 
 
-<style type="text/css">
-    .CLIENT .animation_wrapper
-    {
-            display: flex;
-            position: relative;
-            height: 95vh;
-            width: 100%;
-            justify-content: center;
-            align-items: center;
-            /*background: red;*/
-    }
-
-
-    .temp
-    {
-    	height: 100vh;
-    	background: yellowgreen;
-    }
-</style>
-
-
-<div class="CLIENT">
-    <div class="temp"></div>
-
-
-
-
-
-	<div>Anim_1466_12</div>
-	
-	<!-- //////////////////-->
-	    <div class ="animation_wrapper" id = "Anim_1466_12" style="opacity: 0"></div>
-	<!-- //////////////////-->
-
-
-
-
-
-
-
-
-</div>
-
-
-
-
-<script>
-
-
-
-
-Anim_1466_12();
-
-function Anim_1466_12()
-{
-		let triggerOnScroll;
-		let id = "Anim_1466_12";
-
-		triggerOnScroll = "true";
-
-		let scriptAnimArr = [
-    	'https://cdnjs.cloudflare.com/ajax/libs/gsap/3.7.0/gsap.min.js'
-		]
-
-		function gsapAnim()
-		{
-
-		        gsap.set(id, { opacity: 1 })
-
-
-		        gsap.set(id+"#lineA12", {strokeDasharray: 176, strokeDashoffset: 176})
-		        gsap.set(id+"#numA12", {opacity: 0})
-
-		        gsap.timeline({defaults: {ease: "sine.inOut", duration: 1}})
-		            .to(id+"#lineA12", {strokeDashoffset: 0})
-		            .to(id+"#numA12", {opacity: 1})
-
+	<style type="text/css">
+		* {
+			box-sizing: border-box;
 		}
 
-		let contents =
-		`
+		body {
+			margin: 0;
+			padding: 0;
+		}
+
+		.CLIENT .animation_wrapper {
+			display: flex;
+			position: relative;
+			height: 100vh;
+			width: 100%;
+			justify-content: center;
+			align-items: center;
+			/*background: red;*/
+		}
+
+		.temp {
+			height: 100vh;
+			background: yellowgreen;
+		}
+	</style>
+
+
+	<div class="CLIENT">
+		<div class="temp"></div>
+
+
+
+
+
+		<div>Anim_1466_12</div>
+
+		<!-- //////////////////-->
+		<div class="animation_wrapper" id="Anim_1466_12" style="opacity: 0"></div>
+		<!-- //////////////////-->
+
+
+
+
+
+
+
+
+	</div>
+
+
+
+
+	<script>
+
+
+
+
+		Anim_1466_12();
+
+		function Anim_1466_12() {
+			let triggerOnScroll;
+			let id = "Anim_1466_12";
+			triggerOnScroll = true;
+
+			let scriptAnimArr = [
+				'https://cdnjs.cloudflare.com/ajax/libs/gsap/3.8.0/gsap.min.js'
+			]
+
+			function gsapAnim() {
+				gsap.set(id, { opacity: 1 })
+
+
+				gsap.set(id + "#lineA12", { strokeDasharray: 176, strokeDashoffset: 176 })
+				gsap.set(id + "#numA12", { opacity: 0 })
+
+				gsap.timeline({ defaults: { ease: "sine.inOut", duration: 1 } })
+					.to(id + "#lineA12", { strokeDashoffset: 0 })
+					.to(id + "#numA12", { opacity: 1 })
+
+			}
+
+			let contents =
+				`
 
 				<svg version="1.1" id="anim12" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 					 width="86px" height="80px" viewBox="0 0 86 80" enable-background="new 0 0 86 80" xml:space="preserve">
@@ -137,82 +140,93 @@ function Anim_1466_12()
 
 		`;
 
-		let animWrapper = document.getElementById(id);
-		id = "#"+id+" ";
+			let animWrapper = document.getElementById(id);
+			id = "#" + id + " ";
 
+			function importSVG() {
+				animWrapper.innerHTML = contents;
+				document.querySelector(".animation_wrapper svg").style.width = "100%";
+				document.querySelector(".animation_wrapper svg").style.height = "100%";
 
-		function importSVG()
-		{
-		    animWrapper.innerHTML = contents;
-		    document.querySelector(".animation_wrapper svg").style.width = "100%";
-		    document.querySelector(".animation_wrapper svg").style.height = "100%";
-
-            if(triggerOnScroll)
-            {
-	            window.addEventListener("load", function(){
-	            	gsap.registerPlugin(ScrollTrigger);
-                    ScrollTrigger.create({
-                        trigger: id,
-                        start: "top center",
-                        end: "bottom center",
-                        onEnter: ()=>{gsapAnim()},
-                        once: true
-                    })
-	            })
-            }
-            else
-            {
-           	 	window.addEventListener("load", gsapAnim)
-            }
-		}
-
-		function addScripts()
-		{
-			if(triggerOnScroll)
-			{
-				scriptAnimArr.push('https://cdnjs.cloudflare.com/ajax/libs/gsap/3.5.1/ScrollTrigger.min.js');
-			}
-
-			let finalAddList = [];
-
-
-		    let scriptList;
-			if(document.body != null && document.getElementsByClassName('containerScriptList').length == 0){
-				scriptList = document.createElement('div');
-		    	scriptList.classList.add('containerScriptList')
-			    document.body.appendChild(scriptList);
-			    finalAddList = scriptAnimArr;
-			}
-			else
-			{
-				scriptList = document.getElementsByClassName('containerScriptList')[0];
-            	let existArr = [];
-				let existScriptsLinks =  document.getElementsByClassName('containerScriptList')[0].getElementsByTagName("script");
-				for (let i = 0; i < existScriptsLinks.length; i++) {
-      				existArr.push(existScriptsLinks[i].src);
-				}
-				scriptAnimArr.forEach((elem)=>{
-					if(existArr.indexOf(elem) == -1)
-					{
-						finalAddList.push(elem);
+				window.addEventListener("load", function () {
+					if (triggerOnScroll) {
+						gsap.registerPlugin(ScrollTrigger);
+						ScrollTrigger.create({
+							trigger: id,
+							start: "top center",
+							end: "bottom center",
+							onEnter: () => { gsapAnim() },
+							once: true,
+							// markers: true,
+						})
+					}
+					else {
+						gsapAnim()
 					}
 				})
 			}
-		    finalAddList.forEach((elem)=>{
-		        let tempScript = document.createElement('script')
-		        tempScript.src = elem
-		        scriptList.appendChild(tempScript);
-		    })
+			function scriptLoader(scripts, containerScripts) {
+				console.log(scripts);
+				let count = scripts.length;
+
+				function urlCallback(url, tempIndex) {
+					return function () {
+						tempIndex++
+						if (tempIndex < count) {
+							loadScript(scripts[tempIndex], tempIndex);
+						}
+						else {
+							importSVG();
+						}
+					}
+				}
+
+				function loadScript(url, tempIndex) {
+					var s = document.createElement('script');
+					s.setAttribute('src', url);
+					s.onload = urlCallback(url, tempIndex);
+					containerScripts.appendChild(s);
+				}
+
+				loadScript(scripts[0], 0);
+			};
+
+			function addScripts() {
+				if (triggerOnScroll) {
+					scriptAnimArr.push('https://cdnjs.cloudflare.com/ajax/libs/gsap/3.8.0/ScrollTrigger.min.js');
+				}
+
+				let finalAddList = [];
+
+
+				let scriptList;
+				if (document.body != null && document.getElementsByClassName('containerScriptList').length == 0) {
+					scriptList = document.createElement('div');
+					scriptList.classList.add('containerScriptList')
+					document.body.appendChild(scriptList);
+					finalAddList = scriptAnimArr;
+				}
+				else {
+					scriptList = document.getElementsByClassName('containerScriptList')[0];
+					let existArr = [];
+					let existScriptsLinks = document.getElementsByClassName('containerScriptList')[0].getElementsByTagName("script");
+					for (let i = 0; i < existScriptsLinks.length; i++) {
+						existArr.push(existScriptsLinks[i].src);
+					}
+					scriptAnimArr.forEach((elem) => {
+						if (existArr.indexOf(elem) == -1) {
+							finalAddList.push(elem);
+						}
+					})
+				}
+
+				scriptLoader(finalAddList, scriptList)
+			}
+
+
+			addScripts();
 		}
-
-		addScripts();
-		importSVG();
-}
-
-
-
-
- </script>
+	</script>
 </body>
 
 </html>
