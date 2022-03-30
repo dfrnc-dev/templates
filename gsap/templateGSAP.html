@@ -2,76 +2,96 @@
 <html lang="en">
 
 <head>
-	<meta charset="UTF-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Document</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Animation</title>
 </head>
 
 <body>
 
 
-	<style type="text/css">
-		* {
-			box-sizing: border-box;
-		}
+<style type="text/css">
+    * {
+        box-sizing: border-box;
+    }
 
-		body {
-			margin: 0;
-			padding: 0;
-		}
+    body {
+        margin: 0;
+        padding: 0;
+    }
 
-		.CLIENT .animation_wrapper {
-			display: flex;
-			position: relative;
-			height: 100vh;
-			width: 100%;
-			justify-content: center;
-			align-items: center;
-			/*background: red;*/
-		}
+    .temp {
+        height: 100vh;
+        background: yellowgreen;
+    }
+</style>
 
-		.temp {
-			height: 100vh;
-			background: yellowgreen;
-		}
-	</style>
+<div class="temp"></div>
 
+<div class="CLIENT">
+    <div class="animation_wrapper" id="Anim_1466_12" style="opacity: 0"></div>
+</div>
 
-	<div class="CLIENT">
-		<div class="temp"></div>
-		<!-- <div>Anim_1466_12</div> -->
-		<div class="animation_wrapper" id="Anim_1466_12" style="opacity: 0"></div>
-	</div>
+<script>
+    Anim_1466_12();
 
-	<script>
-		Anim_1466_12();
+    function Anim_1466_12() {
 
-		function Anim_1466_12() {
-			let triggerOnScroll;
-			let id = "Anim_1466_12";
-			triggerOnScroll = true;
+        let id = "#Anim_1466_12" + " ";
+        let scriptAnimArr = [
+            'https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js',
+            'https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/ScrollTrigger.min.js',
 
-			let scriptAnimArr = [
-				'https://cdnjs.cloudflare.com/ajax/libs/gsap/3.8.0/gsap.min.js'
-			]
+        ]
 
-			function gsapAnim() {
-				gsap.set(id, { opacity: 1 })
+        document.addEventListener("DOMContentLoaded",function(){
+            console.log("hellD")
+        })
+
+        function gsapAnim() {
+
+            gsap.set(id, {opacity: 1})
 
 
-				gsap.set(id + "#lineA12", { strokeDasharray: 176, strokeDashoffset: 176 })
-				gsap.set(id + "#numA12", { opacity: 0 })
+            gsap.set(id + "#lineA12", {strokeDasharray: 176, strokeDashoffset: 176})
+            gsap.set(id + "#numA12", {opacity: 0})
 
-				gsap.timeline({ defaults: { ease: "sine.inOut", duration: 1 } })
-					.to(id + "#lineA12", { strokeDashoffset: 0 })
-					.to(id + "#numA12", { opacity: 1 })
+            let testAnim = gsap.timeline()
+                .to(id + "#lineA12", {duration:1,strokeDashoffset: 0,ease: "sine.inOut"})
+                .to(id + "#numA12", {duration:1,opacity: 1,ease: "sine.inOut"})
 
-			}
 
-			let contents =
-				`
+            ScrollTrigger.create({
+                animation: testAnim,
+                trigger: id,
+                start:"0% 50%",
+                end:"100% 100%",
+                scrub: 1,
+            })
 
+
+        }
+        let contents = `
+            <style>
+                .CLIENT .animation_wrapper {
+                    display: flex;
+                    position: relative;
+                    height: 100vh;
+                    width: 100%;
+                    justify-content: center;
+                    align-items: center;
+                    /*background: red;*/
+                }
+                ${id} svg{
+                    width: 100%;
+                    height: 100%;
+                }
+            </style>
+        `;
+
+        contents +=
+            `
 				<svg version="1.1" id="anim12" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 					 width="86px" height="80px" viewBox="0 0 86 80" enable-background="new 0 0 86 80" xml:space="preserve">
 				<g>
@@ -114,95 +134,44 @@
 						c-0.25,0.32-0.37,0.76-0.37,1.32c0,0.56,0.12,1,0.37,1.32c0.25,0.32,0.58,0.48,0.99,0.48C45.23,46.61,45.56,46.44,45.8,46.12z"/>
 				</g>
 				</svg>
-
 		`;
 
-			let animWrapper = document.getElementById(id);
-			id = "#" + id + " ";
 
-			function importSVG() {
-				animWrapper.innerHTML = contents;
-				document.querySelector(".animation_wrapper svg").style.width = "100%";
-				document.querySelector(".animation_wrapper svg").style.height = "100%";
+        let animWrapper = document.querySelector(id);
+        animWrapper.innerHTML = contents;
+        addScripts(scriptAnimArr,gsapAnim);
+    }
 
-				window.addEventListener("load", function () {
-					if (triggerOnScroll) {
-						gsap.registerPlugin(ScrollTrigger);
-						ScrollTrigger.create({
-							trigger: id,
-							start: "top center",
-							end: "bottom center",
-							onEnter: () => { gsapAnim() },
-							once: true,
-							// markers: true,
-						})
-					}
-					else {
-						gsapAnim()
-					}
-				})
-			}
-			function scriptLoader(scripts, containerScripts) {
-				console.log(scripts);
-				let count = scripts.length;
+    function addScripts(scriptSrc,animFunc) {
 
-				function urlCallback(url, tempIndex) {
-					return function () {
-						tempIndex++
-						if (tempIndex < count) {
-							loadScript(scripts[tempIndex], tempIndex);
-						}
-						else {
-							importSVG();
-						}
-					}
-				}
+        let scriptContainer;
+        if (document.body != null && document.getElementsByClassName('containerScriptList').length == 0) {
+            scriptContainer = document.createElement('div');
+            scriptContainer.classList.add('containerScriptList')
+            document.body.appendChild(scriptContainer);
+        }
+        scriptContainer = document.querySelector(".containerScriptList");
 
-				function loadScript(url, tempIndex) {
-					var s = document.createElement('script');
-					s.setAttribute('src', url);
-					s.onload = urlCallback(url, tempIndex);
-					containerScripts.appendChild(s);
-				}
+        scriptSrc.forEach((elem) => {
+            let tempScript = document.createElement('script');
+            tempScript.setAttribute('src', elem);
+            tempScript.async = false;
+            scriptContainer.appendChild(tempScript);
 
-				loadScript(scripts[0], 0);
-			};
+        })
 
-			function addScripts() {
-				if (triggerOnScroll) {
-					scriptAnimArr.push('https://cdnjs.cloudflare.com/ajax/libs/gsap/3.8.0/ScrollTrigger.min.js');
-				}
+        let tempScript = document.createElement('script');
+        tempScript.setAttribute('src', scriptSrc[0]);
+        tempScript.async = false;
+        tempScript.onload = function () {
+            animFunc()
+            console.log("hellS")
+        };
+        scriptContainer.appendChild(tempScript);
 
-				let finalAddList = [];
+    }
 
-
-				let scriptList;
-				if (document.body != null && document.getElementsByClassName('containerScriptList').length == 0) {
-					scriptList = document.createElement('div');
-					scriptList.classList.add('containerScriptList')
-					document.body.appendChild(scriptList);
-					finalAddList = scriptAnimArr;
-				}
-				else {
-					scriptList = document.getElementsByClassName('containerScriptList')[0];
-					let existArr = [];
-					let existScriptsLinks = document.getElementsByClassName('containerScriptList')[0].getElementsByTagName("script");
-					for (let i = 0; i < existScriptsLinks.length; i++) {
-						existArr.push(existScriptsLinks[i].src);
-					}
-					scriptAnimArr.forEach((elem) => {
-						if (existArr.indexOf(elem) == -1) {
-							finalAddList.push(elem);
-						}
-					})
-				}
-
-				scriptLoader(finalAddList, scriptList)
-			}
-
-			addScripts();
-		}
-	</script>
+</script>
 </body>
 
 </html>
