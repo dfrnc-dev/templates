@@ -1,0 +1,1 @@
+{"version":3,"file":"assets/css/main.css","mappings":"AAAA,EACE,qBAAsB,CAAG,KAEzB,QAAS,CACT,SAAU","sources":["webpack://template/./src/assets/sass/style.sass"],"sourcesContent":["* {\n  box-sizing: border-box; }\nbody {\n  margin: 0;\n  padding: 0; }\n"],"names":[],"sourceRoot":""}
