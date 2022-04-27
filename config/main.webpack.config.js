@@ -1,14 +1,13 @@
 const path = require('path')
-const postcssConfig = require('./postcss.config.js')
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const {CleanWebpackPlugin} = require('clean-webpack-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const isDev = process.env.NODE_ENV === 'development'
+const isDev = process.argv[process.argv.indexOf('--mode') + 1] === 'development';
 
 
 module.exports = {
 	entry: {
-		main: path.resolve(__dirname, "../src/index-entry.js"),
+		main: path.resolve(__dirname, "../src/pages/index/index-entry.js"),
 	},
 	output: {
 		filename: 'assets/js/[name].js',
@@ -17,13 +16,14 @@ module.exports = {
 	},
 	resolve: {
 		alias: {
-			"@assets" : path.resolve(__dirname, "../src/assets"),
+			scr: path.resolve(__dirname, "../src"),
 		}
 	},
-	devtool: 'source-map',
+	devtool: isDev ? 'source-map' : null,
 	mode: isDev ? 'development' : 'production',
 	devServer: {
 		port: 3030,
+		watchFiles: path.join(__dirname, 'dist'),
 	},
 	plugins: [
 		new MiniCssExtractPlugin({
@@ -31,7 +31,7 @@ module.exports = {
 		}),
 		new HtmlWebpackPlugin({
 			filename: 'index.html',
-			template: "./src/index.hbs",
+			template: "./src/pages/index/index.hbs",
 			chunks: ['main'],
 			inject: true,
 			minify: false
@@ -40,7 +40,7 @@ module.exports = {
 	],
 	resolveLoader: {
 		alias: {
-			'svg-anim-loader': path.resolve(__dirname, '../loader/svg-anim-loader.js'),
+			'svg-anim-loader': path.resolve(__dirname, './loader/svg-anim-loader.js'),
 		},
 	},
 	module: {
@@ -112,17 +112,17 @@ module.exports = {
 					{
 						loader: 'css-loader',
 						options: {
-							sourceMap: true,
+							sourceMap: isDev,
 							url: false,
 							esModule: false,
 						}
 					}, {
 						loader: 'postcss-loader',
-						options: { sourceMap: true }
+						options: { sourceMap: isDev }
 					},
 					{
 						loader: 'sass-loader',
-						options: {sourceMap: true}
+						options: { sourceMap: isDev }
 					}
 				]
 			},
