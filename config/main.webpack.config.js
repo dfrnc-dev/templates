@@ -19,11 +19,11 @@ module.exports = {
 			scr: path.resolve(__dirname, "../src"),
 		}
 	},
-	devtool: isDev ? 'source-map' : null,
+	devtool: isDev ? 'source-map' : 'eval',
 	mode: isDev ? 'development' : 'production',
 	devServer: {
 		port: 3030,
-		watchFiles: path.join(__dirname, 'dist'),
+		// watchFiles: path.join(__dirname, '../dist'),
 	},
 	plugins: [
 		new MiniCssExtractPlugin({

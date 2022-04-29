@@ -78,7 +78,7 @@ module.exports = function (content) {
     if (options.needContent == "true") {
         return `module.exports = ${svgContent};`;
     } else {
-        return `module.exports = '${svgContent.length}'`;
+        return `module.exports = '${svgContent.length + new Date().getSeconds()}'`;
     }
 };
 
