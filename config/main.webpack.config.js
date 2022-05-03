@@ -2,11 +2,13 @@ const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const CopyPlugin = require("copy-webpack-plugin");
 const isDev = process.argv[process.argv.indexOf('--mode') + 1] === 'development';
 
 
 module.exports = {
 	entry: {
+		global: path.resolve(__dirname, "../src/global/js/global-entry.js"),
 		main: path.resolve(__dirname, "../src/pages/index/index-entry.js"),
 	},
 	output: {
@@ -19,11 +21,10 @@ module.exports = {
 			scr: path.resolve(__dirname, "../src"),
 		}
 	},
-	devtool: isDev ? 'source-map' : 'eval',
+	devtool: isDev ? 'source-map' : undefined,
 	mode: isDev ? 'development' : 'production',
 	devServer: {
 		port: 3030,
-		// watchFiles: path.join(__dirname, '../dist'),
 	},
 	plugins: [
 		new MiniCssExtractPlugin({
@@ -32,9 +33,14 @@ module.exports = {
 		new HtmlWebpackPlugin({
 			filename: 'index.html',
 			template: "./src/pages/index/index.hbs",
-			chunks: ['main'],
+			chunks: ['global', 'main'],
 			inject: true,
 			minify: false
+		}),
+		new CopyPlugin({
+			patterns: [
+				{ from: path.resolve(__dirname, '../src/static'), to: "./assets" },
+			],
 		}),
 		new CleanWebpackPlugin(),
 	],
@@ -80,6 +86,8 @@ module.exports = {
 				options: {
 					minimize: false,
 					esModule: false,
+					root: path.resolve(__dirname, '../dist'),
+					attrs: ['img:src', 'link:href'],
 					// attrs: ['img:src','link:href','image:xlink:href']
 				},
 			},
@@ -104,9 +112,7 @@ module.exports = {
 					{
 						loader: MiniCssExtractPlugin.loader,
 						options: {
-							// url: false,
 							esModule: false,
-							// sourceMap: true
 						},
 					},
 					{
@@ -118,28 +124,28 @@ module.exports = {
 						}
 					}, {
 						loader: 'postcss-loader',
-						options: { sourceMap: isDev }
+						options: { sourceMap: true }
 					},
 					{
 						loader: 'sass-loader',
-						options: { sourceMap: isDev }
+						options: { sourceMap: true }
 					}
 				]
 			},
-			{
-				test: /\.(ttf|woff(2)?|eot)$/,
-				use: [
-					{
-						loader: "file-loader",
-						options: {
-							name: '[name].[ext]',
-							outputPath: './fonts',
-							// publicPath: './src/fonts',
-							// useRelativePaths: true
-						}
-					}
-				]
-			},
+			// {
+			// 	test: /\.(ttf|woff(2)?|eot)$/,
+			// 	use: [
+			// 		{
+			// 			loader: "file-loader",
+			// 			options: {
+			// 				name: '[name].[ext]',
+			// 				outputPath: './fonts',
+			// 				// publicPath: './src/fonts',
+			// 				// useRelativePaths: true
+			// 			}
+			// 		}
+			// 	]
+			// },
 		]
 	}
 }
