@@ -6,7 +6,9 @@ module.exports = function (content) {
     let tempC = '';
     let svgContent = content
     let svgDom = parse.parse(content)
-    let tempId = svgDom.children[0].properties.id ? svgDom.children[0].properties.id : "giveNameLayerSvg_";
+    let tempFileName = this.resourcePath.split("\\")
+    tempFileName = tempFileName[tempFileName.length - 1].replace(".svg", "")
+    let tempId = svgDom.children[0].properties.id ? svgDom.children[0].properties.id : tempFileName + "_";
 
     function parseSvgElem(elem) {
         if (elem.children.length - 1 >= 0) {
@@ -15,7 +17,8 @@ module.exports = function (content) {
                     elemChild.tagName == "linearGradient" ||
                     elemChild.tagName == "radialGradient" ||
                     elemChild.tagName == "clipPath" ||
-                    elemChild.tagName == "mask"
+                    elemChild.tagName == "mask" ||
+                    elemChild.tagName == "filter"
                 ) {
                     let newName = tempId + "_" + elemChild.properties.id;
                     svgContent = svgContent.replace(new RegExp(`"${elemChild.properties.id}"`, "g"), `"${newName}"`)
@@ -61,9 +64,17 @@ module.exports = function (content) {
             })
         }
     }
+
     if (svgDom.children[0].properties["data-content"] == undefined) {
         parseSvgElem(svgDom)
-        svgContent = svgContent.replace(/<svg /g, `<svg data-content="changed" `)
+        let tempPAR = ""
+        if (options.par)
+            tempPAR = " preserveAspectRatio=" + options.par + " ";
+        if (options.class)
+            tempPAR += " class=" + options.class + " ";
+
+        svgContent = svgContent.replace(/<svg /g, `<svg data-content="changed" ${tempPAR
+            }`)
         if (tempC != svgContent) {
             try {
                 fs.writeFileSync(this.resourcePath, svgContent)

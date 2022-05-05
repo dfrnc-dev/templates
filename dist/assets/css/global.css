@@ -1,6 +1,0 @@
-@font-face{font-family:'Roboto';src:url("../fonts/Roboto/Roboto-Regular.woff") format("ttf"),url("../fonts/Roboto/Roboto-Regular.woff") format("woff"),url("../fonts/Roboto/Roboto-Regular.woff2") format("woff2");font-weight:normal;font-style:normal;font-display:swap}@font-face{font-family:'Roboto';src:url("../fonts/Roboto/Roboto-Bold.woff") format("ttf"),url("../fonts/Roboto/Roboto-Bold.woff") format("woff"),url("../fonts/Roboto/Roboto-Bold.woff2") format("woff2");font-weight:bold;font-style:normal;font-display:swap}
-
-*{box-sizing:border-box}body{margin:0;padding:0;font-family:"Roboto",sans-serif}li{list-style:none}
-
-.header{background:red;display:flex;align-items:center}.header__logo{width:50px;height:auto}.header__logo-img{width:100%;height:auto}.header__menu{display:flex;margin-left:auto}.header__menu-item{padding:5px 10px}
-

@@ -3,6 +3,7 @@
 .npm/
 .DS_Store
 node_modules/
+dist/
 *.tgz
 *.zip
 *.log
