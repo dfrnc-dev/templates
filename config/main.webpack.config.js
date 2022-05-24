@@ -1,6 +1,7 @@
 const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const sortCSSmq = require('sort-css-media-queries');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CopyPlugin = require("copy-webpack-plugin");
 const isDev = process.argv[process.argv.indexOf('--mode') + 1] === 'development';
@@ -8,7 +9,7 @@ const isDev = process.argv[process.argv.indexOf('--mode') + 1] === 'development'
 
 module.exports = {
 	entry: {
-		global: path.resolve(__dirname, "../src/global/js/global-entry.js"),
+		// global: path.resolve(__dirname, "../src/global/js/global-entry.js"),
 		main: path.resolve(__dirname, "../src/pages/index/index-entry.js"),
 	},
 	output: {
@@ -25,6 +26,7 @@ module.exports = {
 	mode: isDev ? 'development' : 'production',
 	devServer: {
 		port: 3030,
+		watchFiles: ["src/**/*"],
 	},
 	plugins: [
 		new MiniCssExtractPlugin({
@@ -33,14 +35,16 @@ module.exports = {
 		new HtmlWebpackPlugin({
 			filename: 'index.html',
 			template: "./src/pages/index/index.hbs",
-			chunks: ['global', 'main'],
+			chunks: ['main'],
 			inject: true,
 			minify: false
 		}),
 		new CopyPlugin({
-			patterns: [
-				{ from: path.resolve(__dirname, '../src/static'), to: "./assets" },
-			],
+			patterns: [{
+				from: path.resolve(__dirname, '../src/static'),
+				to: "./assets",
+				noErrorOnMissing: true,
+			}],
 		}),
 		new CleanWebpackPlugin(),
 	],
@@ -124,7 +128,26 @@ module.exports = {
 						}
 					}, {
 						loader: 'postcss-loader',
-						options: { sourceMap: true }
+						options: {
+							postcssOptions: (!isDev) ? {
+								plugins: {
+									'autoprefixer': {},
+									'css-mqpacker': {
+										sort: sortCSSmq
+									},
+									'cssnano': {
+										preset: [
+											'default', {
+												discardComments: {
+													removeAll: true,
+												}
+											}
+										]
+									},
+								}
+							} : {},
+							sourceMap: true,
+						}
 					},
 					{
 						loader: 'sass-loader',
