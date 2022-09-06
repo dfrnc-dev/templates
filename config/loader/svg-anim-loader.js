@@ -34,6 +34,12 @@ module.exports = function (content) {
                                 `xlink:href="${options.outImageUrl + tempArr[tempArr.length - 1]}"`
                             );
                         }
+                        else {
+                            let newName = tempId + "_" + elemChild.properties.id;
+                            svgContent = svgContent.replace(new RegExp(`"${elemChild.properties.id}"`, "g"), `"${newName}"`)
+                            svgContent = svgContent.replace(new RegExp(`="url\\(#${elemChild.properties.id}\\)"`, "g"), `="url(#${newName})"`)
+                            svgContent = svgContent.replace(new RegExp(`xlink:href="#${elemChild.properties.id}"`, "g"), `xlink:href="#${newName}"`)
+                        }
                     }
                     if (elemChild.properties['id']) {
                         let tempId = elemChild.properties['id'];
