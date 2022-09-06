@@ -16,9 +16,7 @@
   ],
   "author": "dfrnc-dev",
   "license": "MIT",
-  "dependencies": {
-    "gsap": "^3.9.1"
-  },
+  "dependencies": {},
   "devDependencies": {
     "@babel/core": "^7.16.12",
     "@babel/preset-env": "^7.16.11",
@@ -30,6 +28,8 @@
     "css-mqpacker": "^7.0.0",
     "cssnano": "^5.0.16",
     "file-loader": "^6.2.0",
+    "fs": "0.0.1-security",
+    "gsap": "^3.10.4",
     "handlebars": "^4.7.7",
     "handlebars-loader": "^1.7.1",
     "html-loader": "^3.1.0",

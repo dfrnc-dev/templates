@@ -1,4 +1,5 @@
-const path = require('path')
+const path = require('path');
+const fs = require('fs');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const sortCSSmq = require('sort-css-media-queries');
@@ -6,11 +7,37 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CopyPlugin = require("copy-webpack-plugin");
 const isDev = process.argv[process.argv.indexOf('--mode') + 1] === 'development';
 
+/**
+ *  add multiple page
+ */
+const pages = fs
+	.readdirSync(__dirname + './../src/pages/', { withFileTypes: true })
+	.filter((item) => item.isDirectory())
+	.filter((item) => { if (item.name[0] != "_") return true; })
+	.map((item) => item.name);
+
+console.log(pages);
+
+let entry = {}
+pages.forEach(page => {
+	entry[page] = path.resolve(__dirname, `../src/pages/${page}/${page}-entry.js`)
+})
+let pluginsHtmlPages = []
+pages.forEach(page => {
+	pluginsHtmlPages.push(
+		new HtmlWebpackPlugin({
+			filename: `${page}.html`,
+			template: `./src/pages/${page}/${page}.hbs`,
+			chunks: ['${page}'],
+			inject: true,
+			minify: false
+		}))
+});
+
 
 module.exports = {
 	entry: {
-		// global: path.resolve(__dirname, "../src/global/js/global-entry.js"),
-		main: path.resolve(__dirname, "../src/pages/index/index-entry.js"),
+		...entry
 	},
 	output: {
 		filename: 'assets/js/[name].js',
@@ -29,15 +56,9 @@ module.exports = {
 		watchFiles: ["src/**/*"],
 	},
 	plugins: [
+		...pluginsHtmlPages,
 		new MiniCssExtractPlugin({
 			filename: "assets/css/[name].css",
-		}),
-		new HtmlWebpackPlugin({
-			filename: 'index.html',
-			template: "./src/pages/index/index.hbs",
-			chunks: ['main'],
-			inject: true,
-			minify: false
 		}),
 		new CopyPlugin({
 			patterns: [{
@@ -48,6 +69,7 @@ module.exports = {
 		}),
 		new CleanWebpackPlugin(),
 	],
+
 	resolveLoader: {
 		alias: {
 			'svg-anim-loader': path.resolve(__dirname, './loader/svg-anim-loader.js'),

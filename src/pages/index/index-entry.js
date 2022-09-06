@@ -1,4 +1,7 @@
+require("./../../global/js/global-entry")
+
 import "./index.scss"
+import gsap from "gsap"
 
 /**
  * outImageUrl - change image url in svg (if image save with link)
@@ -7,5 +10,5 @@ import "./index.scss"
  * class - class for svg <svg class=""></svg>
  * ./img/test_svg/test.svg - path to svg in src
  */
-let svgContent = require("!!svg-anim-loader?outImageUrl=./assets/img/&needContent=false&par='none'&class='test_class'!./img/test.svg")
+let svgContent = require("!!svg-anim-loader?outImageUrl=./assets/img/&needContent=false&par=''&class=''!./img/test.svg")
 // console.log(svgContent);
