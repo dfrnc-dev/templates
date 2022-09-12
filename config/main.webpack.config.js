@@ -11,7 +11,7 @@ const isDev = process.argv[process.argv.indexOf('--mode') + 1] === 'development'
  *  add multiple page
  */
 const pages = fs
-	.readdirSync(__dirname + './../src/pages/', { withFileTypes: true })
+	.readdirSync(__dirname + '/../src/pages/', { withFileTypes: true })
 	.filter((item) => item.isDirectory())
 	.filter((item) => { if (item.name[0] != "_") return true; })
 	.map((item) => item.name);
@@ -28,7 +28,7 @@ pages.forEach(page => {
 		new HtmlWebpackPlugin({
 			filename: `${page}.html`,
 			template: `./src/pages/${page}/${page}.hbs`,
-			chunks: ['${page}'],
+			chunks: [`${page}`],
 			inject: true,
 			minify: false
 		}))
