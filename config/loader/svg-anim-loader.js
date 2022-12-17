@@ -7,6 +7,7 @@ module.exports = function (content) {
     let svgContent = content
     let svgDom = parse.parse(content)
     let tempFileName = this.resourcePath.split("\\")
+    tempFileName = (tempFileName.length <= 1) ? tempFileName[0].split("\/") : tempFileName
     tempFileName = tempFileName[tempFileName.length - 1].replace(".svg", "")
     let tempId = svgDom.children[0].properties.id ? svgDom.children[0].properties.id : tempFileName + "_";
 
