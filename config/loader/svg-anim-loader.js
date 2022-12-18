@@ -10,6 +10,7 @@ module.exports = function (content) {
     tempFileName = (tempFileName.length <= 1) ? tempFileName[0].split("\/") : tempFileName
     tempFileName = tempFileName[tempFileName.length - 1].replace(".svg", "")
     let tempId = svgDom.children[0].properties.id ? svgDom.children[0].properties.id : tempFileName + "_";
+    let tempViewBox = null
 
     function parseSvgElem(elem) {
         if (elem.children && elem.children.length - 1 >= 0) {
@@ -68,6 +69,10 @@ module.exports = function (content) {
                             );
                         }
                     }
+                    // if (elemChild.properties['id'] == options.viewBox) {
+                    if (elemChild.properties['id'] == 'rectViewBox') {
+                        tempViewBox = elemChild;
+                    }
                 }
                 parseSvgElem(elemChild)
             })
@@ -81,6 +86,9 @@ module.exports = function (content) {
             tempPAR = " preserveAspectRatio=" + options.par + " ";
         if (options.class)
             tempPAR += " class=" + options.class + " ";
+        if (options.viewBox) {
+            tempPAR += ` viewBox="${tempViewBox.properties.x} ${tempViewBox.properties.y} ${tempViewBox.properties.width} ${tempViewBox.properties.height}" `;
+        }
 
         svgContent = svgContent.replace(/<svg /g, `<svg data-content="changed" ${tempPAR
             }`)
