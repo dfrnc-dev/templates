@@ -11,6 +11,9 @@ module.exports = function (content) {
     tempFileName = tempFileName[tempFileName.length - 1].replace(".svg", "")
     let tempId = svgDom.children[0].properties.id ? svgDom.children[0].properties.id : tempFileName + "_";
     let tempViewBox = null
+    if (options.viewBox) {
+        options.viewBox = options.viewBox.split("'")[1]
+    }
 
     function parseSvgElem(elem) {
         if (elem.children && elem.children.length - 1 >= 0) {
@@ -69,8 +72,8 @@ module.exports = function (content) {
                             );
                         }
                     }
-                    // if (elemChild.properties['id'] == options.viewBox) {
-                    if (elemChild.properties['id'] == 'rectViewBox') {
+                    if (elemChild.properties['id'] == options.viewBox) {
+                        // if (elemChild.properties['id'] == 'rectViewBox') {
                         tempViewBox = elemChild;
                     }
                 }
