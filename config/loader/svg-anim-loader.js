@@ -24,6 +24,7 @@ module.exports = function (content) {
                         elemChild.tagName == "radialGradient" ||
                         elemChild.tagName == "clipPath" ||
                         elemChild.tagName == "mask" ||
+                        elemChild.tagName == "symbol" ||
                         elemChild.tagName == "filter"
                     ) {
                         let newName = tempId + "_" + elemChild.properties.id;
