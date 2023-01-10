@@ -84,6 +84,7 @@ module.exports = function (content) {
     }
 
     if (svgDom.children[0].properties["data-content"] == undefined) {
+
         parseSvgElem(svgDom)
         let tempPAR = ""
         if (options.par)
@@ -91,11 +92,11 @@ module.exports = function (content) {
         if (options.class)
             tempPAR += " class=" + options.class + " ";
         if (options.viewBox) {
-            tempPAR += ` viewBox="${tempViewBox.properties.x} ${tempViewBox.properties.y} ${tempViewBox.properties.width} ${tempViewBox.properties.height}" `;
+            const newViewBox = `${tempViewBox.properties.x} ${tempViewBox.properties.y} ${tempViewBox.properties.width} ${tempViewBox.properties.height}`;
+            svgContent = svgContent.replace(new RegExp(`width="${svgDom.children[0].properties["width"]}" height="${svgDom.children[0].properties["height"]}" viewBox="${svgDom.children[0].properties["viewBox"]}"`, "g"), `width="${tempViewBox.properties.width}" height="${tempViewBox.properties.height}" viewBox="${newViewBox}"`);
         }
 
-        svgContent = svgContent.replace(/<svg /g, `<svg data-content="changed" ${tempPAR
-            }`)
+        svgContent = svgContent.replace(/<svg /g, `<svg data-content="changed" ${tempPAR}`)
         if (tempC != svgContent) {
             try {
                 fs.writeFileSync(this.resourcePath, svgContent)
